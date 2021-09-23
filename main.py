@@ -28,6 +28,7 @@ trayicon = qta.icon('fa5s.eye-dropper', color = 'white')
 tray = QSystemTrayIcon()
 tray.setIcon(trayicon)
 tray.setVisible(True)
+tray.setContextMenu(traymenu)
 
 print(git.getSelfUserTeams())
 
