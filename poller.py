@@ -5,6 +5,9 @@ class GitAPIPoller:
         self.token = access_token
         self.git = Github(self.token)
 
-    def getSelfUser(self):
-        response = self.git.get_user()
-        return response 
+    def getSelfUserTeams(self):
+        response = self.git.get_user().get_teams()
+        responselist = []
+        for item in response:
+          responselist.append(item)
+        return responselist
