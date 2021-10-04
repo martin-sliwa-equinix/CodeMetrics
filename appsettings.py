@@ -1,5 +1,6 @@
 from pathlib import Path
 import jsonpickle
+import os
 
 class Config:
     def __init__(self):
@@ -13,6 +14,8 @@ class Config:
     def load_settings(self):
         settingspath = Path("./"+self.filename)
         if settingspath.exists():
+            self.delete_settings(settingspath) #Remove this when this is going to prod. Delete the settings file each time now as i change stuff.
+
             settingsdata = open(settingspath).read()
             self = jsonpickle.decode(settingsdata)
             print(self.updatefreq)
@@ -27,3 +30,6 @@ class Config:
 
     def update_settings(self):
         print("Todo")
+
+    def delete_settings(self, path):
+        os.remove(path)
