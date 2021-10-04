@@ -14,11 +14,9 @@ class Config:
     def load_settings(self):
         settingspath = Path("./"+self.filename)
         if settingspath.exists():
-            self.delete_settings(settingspath) #Remove this when this is going to prod. Delete the settings file each time now as i change stuff.
 
             settingsdata = open(settingspath).read()
             self = jsonpickle.decode(settingsdata)
-            print(self.updatefreq)
         else:
             print("Settings file does not exist. Creating file.")
             self.create_settings()
