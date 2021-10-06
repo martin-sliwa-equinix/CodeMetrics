@@ -7,13 +7,21 @@ from appsettings import Config
 from poller import GitAPIPoller
 from appsettings import Config
 
+from UI.TokenForm import Ui_TokenForm
+
 #Init UI Classes and app
 settings = Config()
 app = QApplication([])
 app.setQuitOnLastWindowClosed(False)
 
+# Applogic functions
+
+def tokensubmit(token, window):
+    print(token)
+    window.hide()
+
 # Launch the tray once token has been confirmed
-def trayLaunch(token):
+def trayLaunch():
     #Tray menu design
     traymenu = QMenu()
 
@@ -29,10 +37,12 @@ def trayLaunch(token):
     tray.setContextMenu(traymenu)
 
 # Launch token form to input token
-TokenForm, TokenWindow = uic.loadUiType("./UI/TokenForm.ui")
-tokenwindow = TokenWindow()
-TokenForm().setupUi(tokenwindow)
+tokenwindow = QDialog()
+tokenform = Ui_TokenForm()
+tokenform.setupUi(tokenwindow)
+tokenform.TokenButton.clicked.connect(lambda x: tokensubmit(tokenform.TokenInput.text(), tokenwindow))
 tokenwindow.show()
+
 
 
 # Init git class with token)

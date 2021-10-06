@@ -31,3 +31,7 @@ class Config:
 
     def delete_settings(self, path):
         os.remove(path)
+
+
+#todo 1: Write a component in to this class that will sanitize pickled data on load
+#todo 2: Flesh out the pickle update function. Probably just delete the settings file and recreate on each update.
