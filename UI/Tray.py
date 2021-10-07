@@ -18,7 +18,6 @@ class UI_Tray():
         self.tray = QSystemTrayIcon()
         self.tray.setIcon(self.trayicon)
 
-
     def showtray(self):
         self.tray.setVisible(True)
         self.tray.setContextMenu(self.traymenu)
