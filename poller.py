@@ -1,8 +1,11 @@
 from github import Github
 
 class GitAPIPoller:
-    def __init__(self, access_token):
-        self.token = access_token
+    def __init__(self):
+        print("git instantiated")
+
+    def connect(self, token):
+        self.token = token
         self.git = Github(self.token)
 
     def getSelfUserTeams(self):
