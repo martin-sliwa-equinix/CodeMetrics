@@ -5,10 +5,10 @@ import os
 class Config:
     def __init__(self):
         #Set defaults
-        self.updatefreq = 60
+        self.updatefreq = 30
         self.filename = "settings.txt"
-        self.trackedrepos = {}
-        self.trackedusers = {}
+        self.trackedrepos = []
+        self.trackedusers = []
         self.load_settings()
 
     def load_settings(self):

@@ -7,6 +7,7 @@ from appsettings import Config
 
 from UI.TokenForm import Ui_TokenForm
 from UI.Tray import UI_Tray
+from UI.MainForm import Ui_MainWindow
 
 # Init UI Classes and app
 settings = Config()
@@ -19,19 +20,26 @@ def tokensubmit(token, window, git, tray):
     git.connect(token)
     window.hide()
 
-    # Show tray now that token is submitted
+    # Show tray and main window now that token is submitted
     print(git.getSelfUserTeams())
     tray.showtray()
+    mainwindow.show()
 
-# GUI instantiation
+# Tray instantiation
 tray = UI_Tray(app)
 
-# Launch token form to input token
+# Token input instantiation
 tokenwindow = QDialog()
 tokenform = Ui_TokenForm()
 tokenform.setupUi(tokenwindow)
 tokenform.TokenButton.clicked.connect(lambda x: tokensubmit(tokenform.TokenInput.text(), tokenwindow, git, tray))
 tokenwindow.show()
+
+# Main window instantiation
+mainwindow = QTabWidget()
+mainform = Ui_MainWindow()
+mainform.setupUi(mainwindow)
+
 
 
 app.exec_()
