@@ -25,14 +25,11 @@ def tokensubmit(token, window, git, tray):
     tray.showtray()
     mainwindow.show()
 
-# Tray instantiation
-tray = UI_Tray(app)
-
 # Token input instantiation
 tokenwindow = QDialog()
 tokenform = Ui_TokenForm()
 tokenform.setupUi(tokenwindow)
-tokenform.TokenButton.clicked.connect(lambda x: tokensubmit(tokenform.TokenInput.text(), tokenwindow, git, tray))
+tokenform.TokenButton.clicked.connect(lambda: tokensubmit(tokenform.TokenInput.text(), tokenwindow, git, tray))
 tokenwindow.show()
 
 # Main window instantiation
@@ -40,6 +37,7 @@ mainwindow = QTabWidget()
 mainform = Ui_MainWindow()
 mainform.setupUi(mainwindow)
 
-
+# Tray instantiation
+tray = UI_Tray(app, mainwindow)
 
 app.exec_()

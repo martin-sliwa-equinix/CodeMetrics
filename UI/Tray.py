@@ -4,11 +4,15 @@ import qtawesome as qta
 
 
 class UI_Tray():
-    def __init__(self, app):
+    def __init__(self, app, mainwindow):
         #Tray menu design
         self.traymenu = QMenu()
 
-        #Tray action connect
+        #Tray action list create and connect
+        self.mainformshow = QAction("Open Main Window")
+        self.mainformshow.triggered.connect(lambda:mainwindow.show())
+        self.traymenu.addAction(self.mainformshow)
+        
         self.exit = QAction("Exit")
         self.exit.triggered.connect(app.quit)
         self.traymenu.addAction(self.exit)
