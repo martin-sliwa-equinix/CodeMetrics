@@ -15,26 +15,22 @@ class Applogic:
         for x in repoUrls:
             form.tableRepos.insertRow(form.tableRepos.rowCount())
             form.tableRepos.setItem(form.tableRepos.rowCount()-1, 0, QTableWidgetItem(x))
-        #[form.tableRepos.insertRow(x) for x in repoUrls]
 
     def add_repo(self, repoUrl, settings, git, form):
-        if git.checkValidRepo():
+        if git.checkValidRepo(repoUrl):
             settings.trackedrepos.append(repoUrl)
             settings.update_settings()
             self.refresh_repo_display(settings.trackedrepos, form)
         else:
-            self.popupAlert("ERROR", "Repo failed validation check. Ensure repo URL is correct.")
+            self.popupAlert("ERROR: Repo failed validation", "Ensure repo is \"[username]/[reponame]\" as copied from the end of a repo's URL.")
+            self.refresh_repo_display(settings.trackedrepos, form)
 
     def remove_repo(self,repoIndex, form):
-        print("TODO")
+        print("TODO: Remove Repo")
 
     def popupAlert(self, title, message):
-        msg = QMessageBox
+        msg = QMessageBox()
         msg.setWindowTitle(title)
         msg.setText(message)
-        msg.setIcon(QMessageBox.critical)
+        msg.setIcon(QMessageBox.Critical)
         msg.exec_()
-
-
-    def remove_repo(self, repoUrl):
-        print("TODO")

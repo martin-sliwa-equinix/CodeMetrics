@@ -15,8 +15,15 @@ class GitAPIPoller:
           responselist.append(item)
         return responselist
 
-    def checkValidRepo(self):
-        return True
+    def checkValidRepo(self, URL):
+        try:
+            self.git.get_repo(URL)
+            return True
+        except:
+            print("Error finding repo")
+            return False
+
+
 
     def checkValidUser(self):
         print("TODO")

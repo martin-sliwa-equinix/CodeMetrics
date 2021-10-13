@@ -7,15 +7,15 @@ class Config:
         #Set defaults
         self.updatefreq = 30
         self.filename = "settings.txt"
+        self.settingspath = Path("./"+self.filename)
         self.trackedrepos = []
         self.trackedusers = []
         self.load_settings()
 
     def load_settings(self):
-        settingspath = Path("./"+self.filename)
-        if settingspath.exists():
+        if self.settingspath.exists():
 
-            settingsdata = open(settingspath).read()
+            settingsdata = open(self.settingspath).read()
             self = jsonpickle.decode(settingsdata)
         else:
             print("Settings file does not exist. Creating file.")
@@ -27,10 +27,11 @@ class Config:
             sf.write(jsondata)
 
     def update_settings(self):
-        print("Todo")
+        self.delete_settings()
+        self.create_settings()
 
-    def delete_settings(self, path):
-        os.remove(path)
+    def delete_settings(self):
+        os.remove(self.settingspath)
 
 
 #todo 1: Write a component in to this class that will sanitize pickled data on load
