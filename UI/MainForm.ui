@@ -89,7 +89,7 @@
      <string>Tracked Repos</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="tableWidget">
+   <widget class="QTableWidget" name="tableRepos">
     <property name="geometry">
      <rect>
       <x>420</x>

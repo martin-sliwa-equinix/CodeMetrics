@@ -14,3 +14,9 @@ class GitAPIPoller:
         for item in response:
           responselist.append(item)
         return responselist
+
+    def isValidRepo(self):
+        print("TODO")
+
+    def isValidUser(self):
+        print("TODO")
