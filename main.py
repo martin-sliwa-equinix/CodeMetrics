@@ -15,19 +15,21 @@ settings = Config()
 app = QApplication([])
 app.setQuitOnLastWindowClosed(False)
 git = GitAPIPoller()
+applogic = Applogic()
 
 # Token input instantiation
 tokenwindow = QDialog()
 tokenform = Ui_TokenForm()
 tokenform.setupUi(tokenwindow)
-tokenform.TokenButton.clicked.connect(lambda: Applogic.tokensubmit(tokenform.TokenInput.text(), tokenwindow, git, tray, mainwindow))
+tokenform.TokenButton.clicked.connect(lambda: applogic.tokensubmit(tokenform.TokenInput.text(), tokenwindow, git, tray, mainwindow))
 tokenwindow.show()
 
 # Main window instantiation and hookup
 mainwindow = QTabWidget()
 mainform = Ui_MainWindow()
 mainform.setupUi(mainwindow)
-Applogic.refresh_repo_display(settings.trackedrepos, mainwindow)
+applogic.refresh_repo_display(settings.trackedrepos, mainform)
+mainform.ButtonAddRepo.clicked.connect(lambda: applogic.add_repo(mainform.TextboxAddRepo.text()))
 
 
 # Tray instantiation

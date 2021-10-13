@@ -12,9 +12,9 @@ class Applogic:
         form.tableRepos.clearContents()
         [form.tableRepos.insertRow(x) for x in repoUrls]
 
-    def add_repo(self, repoUrl):
+    def add_repo(self):
         print("TODO")
-        self.refresh_repo_display()
+
 
     def remove_repo(self, repoUrl):
         print("TODO")
