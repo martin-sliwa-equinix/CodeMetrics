@@ -29,7 +29,7 @@ mainwindow = QTabWidget()
 mainform = Ui_MainWindow()
 mainform.setupUi(mainwindow)
 applogic.refresh_repo_display(settings.trackedrepos, mainform)
-mainform.ButtonAddRepo.clicked.connect(lambda: applogic.add_repo(mainform.TextboxAddRepo.text()))
+mainform.ButtonAddRepo.clicked.connect(lambda: applogic.add_repo(mainform.TextboxAddRepo.text(), settings, git, mainform))
 
 
 # Tray instantiation
