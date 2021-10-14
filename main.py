@@ -30,7 +30,7 @@ mainform = Ui_MainWindow()
 mainform.setupUi(mainwindow)
 applogic.refresh_repo_display(settings.trackedrepos, mainform)
 mainform.ButtonAddRepo.clicked.connect(lambda: applogic.add_repo(mainform.TextboxAddRepo.text(), settings, git, mainform))
-mainform.ButtonRemoveRepo.clicked.connect(lambda: applogic.remove_repo())
+mainform.ButtonRemoveRepo.clicked.connect(lambda: applogic.remove_repo(mainform.tableRepos.currentRow(), settings, mainform))
 
 
 # Tray instantiation

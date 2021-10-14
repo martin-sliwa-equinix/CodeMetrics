@@ -25,8 +25,10 @@ class Applogic:
             self.popupAlert("ERROR: Repo failed validation", "Ensure repo is \"[username]/[reponame]\" as copied from the end of a repo's URL.")
             self.refresh_repo_display(settings.trackedrepos, form)
 
-    def remove_repo(self,repoIndex, form):
-        print("TODO: Remove Repo")
+    def remove_repo(self,repoIndex, settings, form):
+        del settings.trackedrepos[repoIndex]
+        settings.update_settings()
+        self.refresh_repo_display(settings.trackedrepos, form)
 
     def popupAlert(self, title, message):
         msg = QMessageBox()
