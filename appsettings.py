@@ -5,8 +5,7 @@ import os
 class Config:
     def __init__(self):
         #Set defaults
-        self.updatefreq = 30
-        self.filename = "settings.txt"
+        self.filename = "settings.conf"
         self.settingspath = Path("./"+self.filename)
         self.trackedrepos = []
         self.trackedusers = []
@@ -16,7 +15,12 @@ class Config:
         if self.settingspath.exists():
 
             settingsdata = open(self.settingspath).read()
-            self = jsonpickle.decode(settingsdata)
+            test = jsonpickle.decode(settingsdata)
+            self.filename = test.filename
+            self.settingspath = test.settingspath
+            self.trackedrepos = test.trackedrepos
+            self.trackedusers = test.trackedusers
+            
         else:
             print("Settings file does not exist. Creating file.")
             self.create_settings()
