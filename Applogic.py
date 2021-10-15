@@ -1,12 +1,16 @@
 from PyQt5.QtWidgets import QMessageBox, QTableWidgetItem
 
 class Applogic:
-    def tokensubmit(self, token, window, git, tray, mainwindow):
-        git.connect(token)
+    def __init__(self, git):
+        self.git = git
+
+
+    def tokensubmit(self, token, window, tray, mainwindow):
+        self.git.connect(token)
         window.hide()
 
         # Show tray and main window now that token is submitted
-        print(git.getSelfUserTeams())
+        print(self.git.getSelfUserTeams())
         tray.showtray()
         mainwindow.show()  
 
@@ -16,8 +20,8 @@ class Applogic:
             form.tableRepos.insertRow(form.tableRepos.rowCount())
             form.tableRepos.setItem(form.tableRepos.rowCount()-1, 0, QTableWidgetItem(x))
 
-    def add_repo(self, repoUrl, settings, git, form):
-        if git.checkValidRepo(repoUrl):
+    def add_repo(self, repoUrl, settings, form):
+        if self.git.checkValidRepo(repoUrl):
             settings.trackedrepos.append(repoUrl)
             settings.update_settings()
             self.refresh_repo_display(settings.trackedrepos, form)
