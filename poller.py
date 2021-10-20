@@ -30,6 +30,9 @@ class GitAPIPoller:
         print("TODO")
         return True 
 
+    def get_repo(self, URL):
+        return self.git.get_repo(URL)
+
     def get_all_repo_commits(self, repo):
         #This function will return all of the commits on all branches for supplied repos
         commits = []
@@ -40,8 +43,7 @@ class GitAPIPoller:
 
     def get_repo_commit_stats(self, repo, commit):
         #This function will return the additions and deletions of a given commit in a repo
-        additions, deletions = 0,0
-        repo.get_commit(commit).stats
+        stats = repo.get_commit(commit).stats
 
-        return additions,deletions
+        return stats.additions,stats.deletions, stats.last_modified
 

@@ -4,7 +4,6 @@ class Applogic:
     def __init__(self, git):
         self.git = git
 
-
     def tokensubmit(self, token, window, tray, mainwindow):
         self.git.connect(token)
         window.hide()
@@ -33,6 +32,9 @@ class Applogic:
         del settings.trackedrepos[repoIndex]
         settings.update_settings()
         self.refresh_repo_display(settings.trackedrepos, form)
+
+    def update_repo_commit_graph(self):
+        print("TODO")
 
     def popupAlert(self, title, message):
         msg = QMessageBox()
