@@ -1,5 +1,6 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+import seaborn as sns
 
 from appsettings import Config
 from poller import GitAPIPoller
