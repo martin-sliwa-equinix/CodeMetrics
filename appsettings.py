@@ -11,6 +11,9 @@ class Config:
         self.trackedusers = []
         self.load_settings()
 
+    def get_settings_repos(self):
+        return self.trackedrepos
+
     def load_settings(self):
         if self.settingspath.exists():
 

@@ -31,14 +31,38 @@ class GitAPIPoller:
         return True 
 
     def get_repo(self, URL):
+        #Return a single repo object when requested by URL
         return self.git.get_repo(URL)
 
-    def get_all_repo_commits(self, repo):
-        #This function will return all of the commits on all branches for supplied repos
-        commits = []
-        branches = repo.get_branches()
-        [commits.append(repo.get_commits(branch.commit.sha)) for branch in branches]
+    def get_all_repos(self, URLs):
+        #Return a list of all repo objects requested by list of URLs
+        repo_objects = []
+        for URL in URLs:
+            repo_objects.append(self.git.get_repo(URL))
+        return repo_objects
 
+    def get_repo_commits_by_branch(self, repo):
+        #This function will return all of the commit objects on all branches for a supplied repo
+        branch_commits = []
+        branches = repo.get_branches()
+        [branch_commits.append(repo.get_commits(branch.commit.sha)) for branch in branches]
+        
+        #returns commits[branch n][commit n]
+        return branch_commits
+
+    def get_repo_commits_all_branches(self, repo):
+        #This function will return all of the commit objects on a repo, collapsing branches
+        branch_commits = []
+        branches = repo.get_branches()
+        [branch_commits.append(repo.get_commits(branch.commit.sha)) for branch in branches]
+
+        commits = []
+        for branch_commit in branch_commits:
+            #This will return an object with all the commits for this branch. Must further loop to get each commit.
+            for commit in branch_commit:
+                commits.append(commit)
+            
+        #returns commits[commit n]
         return commits
 
     def get_repo_commit_stats(self, repo, commit):

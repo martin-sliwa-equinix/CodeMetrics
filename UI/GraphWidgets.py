@@ -19,7 +19,8 @@ class MultilineGraphWidget(QWidget):
         #fig.set_facecolor("blue")
         fig.patch.set_visible(False)
         self.canvas = FigureCanvas(fig)
-        self.setStyleSheet("background-color:grey;")
+        #self.setStyleSheet("background-color:grey;")
+        self.setStyleSheet("background:transparent;")
 
         vertical_layout = QVBoxLayout()
         vertical_layout.setContentsMargins(0,0,0,0)
@@ -39,9 +40,11 @@ class MultilineGraphWidget(QWidget):
         data = data.rolling(7).mean()
 
         sns.set_context("paper")
+        sns.set_style("darkgrid") #May take effect after wide form -> long form data conversion
         plot = sns.lineplot(data=data, ax=self.axes)
         plot.tick_params(colors='red', which='both')
         plot.xaxis.label.set_color('purple')
         plot.yaxis.label.set_color('silver')
+        
         
         self.plot = plot

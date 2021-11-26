@@ -29,7 +29,8 @@
    <enum>Qt::LeftToRight</enum>
   </property>
   <property name="styleSheet">
-   <string notr="true">QTabBar::tab { height: 60px; width: 170px; }</string>
+   <string notr="true">QTabBar::tab { height: 60px; width: 170px; }
+QTabWidget::background-color:grey</string>
   </property>
   <property name="tabPosition">
    <enum>QTabWidget::South</enum>
