@@ -48,3 +48,21 @@ class DBHandler:
             c.execute(sql_command)
         except Error as e:
             print(e)
+
+    def insert_repo(self, conn, repo):
+        sql = """ INSERT INTO repos(reponame, reposha)
+        VALUES(?,?)
+        """
+        
+        cur = conn.cursor()
+        cur.execute(sql, repo)
+        conn.commit()
+
+    def insert_commit(self, conn, repo):
+        sql = """ INSERT INTO commits(commitsha, branchsha, branchname, lastmodified, statsadded. statsdeleted, committer, reposha)
+        VALUES(?,?,?,?,?,?,?,?)
+        """
+
+        cur = conn.cursor()
+        cur.execute(sql, repo)
+        conn.commit()
