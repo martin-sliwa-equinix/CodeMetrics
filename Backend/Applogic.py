@@ -6,14 +6,20 @@ class Applogic:
     def __init__(self, git):
         self.git = git
 
-    def tokensubmit(self, token, window, tray, mainwindow, graphlogic, repos):
-        self.git.connect(token)
-        window.hide()
+    def tokensubmit(self, token, window, tray, mainwindow, graphlogic, repos, dbhandler):
+        try:
+            self.git.connect(token)
 
-        # Show tray and main window now that token is submitted
-        graphlogic.set_initial_data(repos)
-        tray.showtray()
-        mainwindow.show()  
+            window.hide()
+
+            # Show tray and main window now that token is submitted
+            #graphlogic.set_initial_data(repos)
+            tray.showtray()
+            mainwindow.show()  
+        except:
+            self.popupAlert("ERROR: Git has failed to connect. Check your credentials.")
+
+
 
     def refresh_repo_display(self, repoUrls, form):
         form.tableRepos.setRowCount(0)

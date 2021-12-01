@@ -18,7 +18,8 @@ class Ui_MainWindow(object):
         MainWindow.setMaximumSize(QtCore.QSize(800, 600))
         MainWindow.setBaseSize(QtCore.QSize(800, 600))
         MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
-        MainWindow.setStyleSheet("QTabBar::tab { height: 60px; width: 170px; }")
+        MainWindow.setStyleSheet("QTabBar::tab { height: 60px; width: 170px; }\n"
+"QTabWidget::background-color:grey")
         MainWindow.setTabPosition(QtWidgets.QTabWidget.South)
         MainWindow.setElideMode(QtCore.Qt.ElideRight)
         MainWindow.setUsesScrollButtons(False)
@@ -104,10 +105,16 @@ class Ui_MainWindow(object):
         self.label.setGeometry(QtCore.QRect(129, 215, 121, 51))
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
+        self.buttonSyncRepos = QtWidgets.QPushButton(self.TabSettings)
+        self.buttonSyncRepos.setGeometry(QtCore.QRect(90, 460, 191, 71))
+        self.buttonSyncRepos.setObjectName("buttonSyncRepos")
+        self.LabelPullMetrics = QtWidgets.QLabel(self.TabSettings)
+        self.LabelPullMetrics.setGeometry(QtCore.QRect(90, 440, 191, 20))
+        self.LabelPullMetrics.setObjectName("LabelPullMetrics")
         MainWindow.addTab(self.TabSettings, "")
 
         self.retranslateUi(MainWindow)
-        MainWindow.setCurrentIndex(0)
+        MainWindow.setCurrentIndex(3)
         self.RepoGraphTab.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -134,5 +141,7 @@ class Ui_MainWindow(object):
         self.ButtonRemoveRepo.setText(_translate("MainWindow", "Remove"))
         self.ButtonAddRepo.setText(_translate("MainWindow", "Add Repo"))
         self.label.setText(_translate("MainWindow", "WIP: ADD MORE SETTINGS HERE"))
+        self.buttonSyncRepos.setText(_translate("MainWindow", "Pull Metrics"))
+        self.LabelPullMetrics.setText(_translate("MainWindow", "Pull metrics to local database:"))
         MainWindow.setTabText(MainWindow.indexOf(self.TabSettings), _translate("MainWindow", "Settings"))
 from UI.GraphWidgets import MultilineGraphWidget

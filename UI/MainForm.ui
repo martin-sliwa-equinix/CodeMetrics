@@ -36,7 +36,7 @@ QTabWidget::background-color:grey</string>
    <enum>QTabWidget::South</enum>
   </property>
   <property name="currentIndex">
-   <number>0</number>
+   <number>3</number>
   </property>
   <property name="elideMode">
    <enum>Qt::ElideRight</enum>
@@ -285,6 +285,32 @@ QTabWidget::background-color:grey</string>
     </property>
     <property name="wordWrap">
      <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonSyncRepos">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>460</y>
+      <width>191</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pull Metrics</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="LabelPullMetrics">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>440</y>
+      <width>191</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pull metrics to local database:</string>
     </property>
    </widget>
   </widget>

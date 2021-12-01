@@ -2,10 +2,11 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import seaborn as sns
 
-from appsettings import Config
-from poller import GitAPIPoller
-from appsettings import Config
-from Applogic import Applogic, Graphlogic
+from Backend.appsettings import Config
+from Backend.poller import GitAPIPoller
+from Backend.appsettings import Config
+from Backend.Applogic import Applogic, Graphlogic
+from Backend.Sqlitedb import DBHandler
 
 from UI.TokenForm import Ui_TokenForm
 from UI.Tray import UI_Tray
@@ -18,12 +19,13 @@ app.setQuitOnLastWindowClosed(False)
 git = GitAPIPoller()
 applogic = Applogic(git)
 graphlogic = Graphlogic(git)
+dbhandler = DBHandler()
 
 # Token input instantiation
 tokenwindow = QDialog()
 tokenform = Ui_TokenForm()
 tokenform.setupUi(tokenwindow)
-tokenform.TokenButton.clicked.connect(lambda: applogic.tokensubmit(tokenform.TokenInput.text(), tokenwindow, tray, mainwindow, graphlogic, settings.get_settings_repos()))
+tokenform.TokenButton.clicked.connect(lambda: applogic.tokensubmit(tokenform.TokenInput.text(), tokenwindow, tray, mainwindow, graphlogic, settings.get_settings_repos(), dbhandler))
 tokenwindow.show()
 
 # Main window instantiation and hookup
