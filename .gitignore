@@ -4,3 +4,4 @@ settings.txt
 settings.conf
 *.temp
 .DS_Store
+data.db

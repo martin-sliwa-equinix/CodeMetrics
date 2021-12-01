@@ -41,6 +41,14 @@ class GitAPIPoller:
             repo_objects.append(self.git.get_repo(URL))
         return repo_objects
 
+    def get_repo_branches(self, repo):
+        #This will return branch objects for the provided repo object
+        return repo.get_branches()
+
+    def get_commits_by_branch(self, repo, branch):
+        #This function will return all of the commits objects associated with a given branch object
+        return repo.get_commits(branch.commit.sha)
+
     def get_repo_commits_by_branch(self, repo):
         #This function will return all of the commit objects on all branches for a supplied repo
         branch_commits = []
@@ -67,7 +75,7 @@ class GitAPIPoller:
 
     def get_repo_commit_stats(self, repo, commit):
         #This function will return the additions and deletions of a given commit in a repo
-        stats = repo.get_commit(commit).stats
+        stats = repo.get_commit(commit.sha).stats
 
-        return stats.additions,stats.deletions, stats.last_modified
+        return stats
 

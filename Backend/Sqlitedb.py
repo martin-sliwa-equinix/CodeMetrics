@@ -7,22 +7,21 @@ class DBHandler:
     def __init__(self):
         self.filepath = Path("./data.db")
 
-        self.sql_create_repo_table= """ CREATE TABLE IF NOT EXISTS repos (
+        self.sql_create_branch_table= """ CREATE TABLE IF NOT EXISTS branches (
                 id integer PRIMARY KEY,
-                reponame text NOT NULL,
-                reposha text NOT NULL
+                repo_name text NOT NULL,
+                branch_name text NOT NULL
                 ); """
 
         self.sql_create_commit_table= """ CREATE TABLE IF NOT EXISTS commits (
                 id integer PRIMARY KEY,
-                commitsha text NOT NULL,
-                branchsha text,
-                branchname text,
-                lastmodified text,
-                statsadded int,
-                statsdeleted int,
+                commit_sha text NOT NULL,
+                last_modified text,
+                stats_added int,
+                stats_deleted int,
                 committer text,
-                FOREIGN KEY (reposha) REFERENCES repos (reposha)
+                branch_name,
+                FOREIGN KEY (branch_name) REFERENCES branches(branch_name)
                 ); """
 
         #Connect to the db
@@ -30,8 +29,8 @@ class DBHandler:
 
         #Ensure tables are created on init
         if self.conn is not None:
-            self.create_table(self.conn, self.sql_create_commit_table)
-            self.create_table(self.conn, self.sql_create_commit_table)
+            self.create_table(self.sql_create_branch_table)
+            self.create_table(self.sql_create_commit_table)
 
     def create_connection(self, filepath):
         conn = None
@@ -42,27 +41,29 @@ class DBHandler:
         
         return conn
 
-    def create_table(self, conn, sql_command):
+    def create_table(self, sql_command):
         try:
-            c = conn.cursor()
+            c = self.conn.cursor()
             c.execute(sql_command)
         except Error as e:
             print(e)
 
-    def insert_repo(self, conn, repo):
-        sql = """ INSERT INTO repos(reponame, reposha)
+    def insert_branch(self, branch):
+        sql = """ INSERT INTO branches(repo_name, branch_name)
         VALUES(?,?)
         """
-        
+        conn = self.conn
+
         cur = conn.cursor()
-        cur.execute(sql, repo)
+        cur.execute(sql, branch)
         conn.commit()
 
-    def insert_commit(self, conn, repo):
-        sql = """ INSERT INTO commits(commitsha, branchsha, branchname, lastmodified, statsadded. statsdeleted, committer, reposha)
-        VALUES(?,?,?,?,?,?,?,?)
+    def insert_commit(self, commit):
+        sql = """ INSERT INTO commits(commit_sha, last_modified, stats_added, stats_deleted, committer, branch_name)
+        VALUES(?,?,?,?,?,?)
         """
+        conn = self.conn
 
         cur = conn.cursor()
-        cur.execute(sql, repo)
+        cur.execute(sql, commit)
         conn.commit()

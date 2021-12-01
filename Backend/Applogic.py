@@ -6,7 +6,7 @@ class Applogic:
     def __init__(self, git):
         self.git = git
 
-    def tokensubmit(self, token, window, tray, mainwindow, graphlogic, repos, dbhandler):
+    def tokensubmit(self, token, window, tray, mainwindow, graphlogic, repos):
         try:
             self.git.connect(token)
 
@@ -17,9 +17,8 @@ class Applogic:
             tray.showtray()
             mainwindow.show()  
         except:
+            #TODO: This doesnt seem to be working?
             self.popupAlert("ERROR: Git has failed to connect. Check your credentials.")
-
-
 
     def refresh_repo_display(self, repoUrls, form):
         form.tableRepos.setRowCount(0)
@@ -51,8 +50,38 @@ class Applogic:
         msg.setIcon(QMessageBox.Critical)
         msg.exec_()
 
+    def populateDB(self, dbhandler, git, repos):
+        
+        
+        repo_list = self.git.get_all_repos(repos)
+        
+        
+        for repo_obj in repo_list:
+            #TODO: Check if this repo already exists in db in case of dupe repos
+            #TODO: Also find method to see if repo data is newer than what we have
+            branches = git.get_repo_branches(repo_obj)
+
+            for branch in branches:
+                #Populate branches table
+                dbhandler.insert_branch((repo_obj.name, branch.name))
+
+                commits = git.get_commits_by_branch(repo_obj, branch)
+
+                for commit in commits:
+                    #TODO: Check if commitsha already exists in db before doing this
+                    if hasattr(commit.committer, "login"): 
+                        committer = commit.committer.login
+                    else: 
+                        committer = "None"
+                    
+                    repo_stats = git.get_repo_commit_stats(repo_obj, commit)
+                    values = [commit.sha, commit.last_modified, repo_stats.additions, repo_stats.deletions, committer, branch.name]
+                    dbhandler.insert_commit(values)
+
+            
 
 
+#Contains all dataframe and graph related calculations
 class Graphlogic:
     def __init__(self, git):
         self.git = git
@@ -73,6 +102,7 @@ class Graphlogic:
         self.graphdata_codedensity = self.get_graphdata_codedensity(repos)
         print(self.graphdata_codedensity)
 
+    #TODO: Probably rewrite this entire thing using DB data now
     def get_graphdata_codedensity(self, repos):
         #Return a constructed dataframe of the following format:
         # Reponame | Date of commit | commits added + subtracted
