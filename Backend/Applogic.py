@@ -52,9 +52,7 @@ class Applogic:
 
     def populateDB(self, dbhandler, git, repos):
         
-        
         repo_list = self.git.get_all_repos(repos)
-        
         
         for repo_obj in repo_list:
             #TODO: Check if this repo already exists in db in case of dupe repos
@@ -103,9 +101,13 @@ class Graphlogic:
         print(self.graphdata_codedensity)
 
     #TODO: Probably rewrite this entire thing using DB data now
-    def get_graphdata_codedensity(self, repos):
+    def get_graphdata_codedensity(self, repos, dbhandler):
         #Return a constructed dataframe of the following format:
         # Reponame | Date of commit | commits added + subtracted
+        data = dbhandler.get_graphdata_codedensity()
+        
+        return pd.DataFrame(data)
+
         repo_list = self.git.get_all_repos(repos)
 
         data = []

@@ -67,3 +67,22 @@ class DBHandler:
         cur = conn.cursor()
         cur.execute(sql, commit)
         conn.commit()
+
+    def get_graphdata_codedensity(self):
+        #Return rows with following format:
+        # Reponame | Date of commit | commits added + subtracted
+
+        sql = """
+        SELECT branches.repo_name, commits.last_modified, commits.stats_added + commits.stats_deleted
+        FROM commits, branches
+        WHERE commits.branch_name = branches.branch_name
+        """
+        conn = self.conn
+
+        cur = conn.cursor()
+        cur.execute(sql)
+
+    rows = cur.fetchall()
+
+    for row in rows:
+        print(row)
