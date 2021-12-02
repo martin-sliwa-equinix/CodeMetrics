@@ -18,7 +18,7 @@ class Applogic:
             mainwindow.show()  
         except:
             #TODO: This doesnt seem to be working?
-            self.popupAlert("ERROR: Git has failed to connect. Check your credentials.")
+            self.popupAlert("ERROR", "Git has failed to connect. Check your credentials.")
 
     def refresh_repo_display(self, repoUrls, form):
         form.tableRepos.setRowCount(0)
@@ -101,31 +101,14 @@ class Graphlogic:
         print(self.graphdata_codedensity)
 
     #TODO: Probably rewrite this entire thing using DB data now
-    def get_graphdata_codedensity(self, repos, dbhandler):
+    def get_graphdata_codedensity(self, dbhandler):
         #Return a constructed dataframe of the following format:
         # Reponame | Date of commit | commits added + subtracted
         data = dbhandler.get_graphdata_codedensity()
-        
-        return pd.DataFrame(data)
+        type(data)
+        print("Data says:")
+        print(data)
 
-        repo_list = self.git.get_all_repos(repos)
-
-        data = []
-        for repo_obj in repo_list:
-            print(repo_obj.name)
-            repoName = repo_obj.name
-            commits = self.git.get_repo_commits_all_branches(repo_obj)
-            print("commits is")
-            print(commits)
-
-            #Construct the data frame:
-            for commit in commits:
-                print("commit is")
-                print(commit)
-                commitstats = commit.stats
-                commitdate = commitstats.last_modified
-                commitchanges = commitstats.additions + commitstats.deletions
-                data.append([repoName, commitdate, commitchanges])
-
-
-        return pd.DataFrame(data)
+        x = pd.DataFrame(data)
+        print(x)
+        #return pd.DataFrame(data)

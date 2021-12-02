@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'MainForm.ui'
+# Form implementation generated from reading ui file 'UI/MainForm.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -106,11 +106,19 @@ class Ui_MainWindow(object):
         self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.buttonSyncRepos = QtWidgets.QPushButton(self.TabSettings)
-        self.buttonSyncRepos.setGeometry(QtCore.QRect(90, 460, 191, 71))
+        self.buttonSyncRepos.setGeometry(QtCore.QRect(20, 460, 191, 71))
         self.buttonSyncRepos.setObjectName("buttonSyncRepos")
         self.LabelPullMetrics = QtWidgets.QLabel(self.TabSettings)
-        self.LabelPullMetrics.setGeometry(QtCore.QRect(90, 440, 191, 20))
+        self.LabelPullMetrics.setGeometry(QtCore.QRect(20, 440, 191, 20))
         self.LabelPullMetrics.setObjectName("LabelPullMetrics")
+        self.ButtonUpdateGraphs = QtWidgets.QPushButton(self.TabSettings)
+        self.ButtonUpdateGraphs.setGeometry(QtCore.QRect(210, 460, 191, 71))
+        self.ButtonUpdateGraphs.setObjectName("ButtonUpdateGraphs")
+        self.line_2 = QtWidgets.QFrame(self.TabSettings)
+        self.line_2.setGeometry(QtCore.QRect(400, 0, 20, 541))
+        self.line_2.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_2.setObjectName("line_2")
         MainWindow.addTab(self.TabSettings, "")
 
         self.retranslateUi(MainWindow)
@@ -143,5 +151,6 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "WIP: ADD MORE SETTINGS HERE"))
         self.buttonSyncRepos.setText(_translate("MainWindow", "Pull Metrics"))
         self.LabelPullMetrics.setText(_translate("MainWindow", "Pull metrics to local database:"))
+        self.ButtonUpdateGraphs.setText(_translate("MainWindow", "Update Graphs"))
         MainWindow.setTabText(MainWindow.indexOf(self.TabSettings), _translate("MainWindow", "Settings"))
 from UI.GraphWidgets import MultilineGraphWidget

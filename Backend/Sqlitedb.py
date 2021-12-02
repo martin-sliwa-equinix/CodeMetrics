@@ -82,7 +82,5 @@ class DBHandler:
         cur = conn.cursor()
         cur.execute(sql)
 
-    rows = cur.fetchall()
-
-    for row in rows:
-        print(row)
+        rows = cur.fetchall()
+        print(rows)
