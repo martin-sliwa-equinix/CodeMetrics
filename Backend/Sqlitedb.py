@@ -83,4 +83,4 @@ class DBHandler:
         cur.execute(sql)
 
         rows = cur.fetchall()
-        print(rows)
+        return rows

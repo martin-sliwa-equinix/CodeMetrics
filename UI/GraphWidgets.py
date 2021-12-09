@@ -22,16 +22,16 @@ class MultilineGraphWidget(QWidget):
         #self.setStyleSheet("background-color:grey;")
         self.setStyleSheet("background:transparent;")
 
-        vertical_layout = QVBoxLayout()
-        vertical_layout.setContentsMargins(0,0,0,0)
-        vertical_layout.addWidget(self.canvas)
+        self.vertical_layout = QVBoxLayout()
+        self.vertical_layout.setContentsMargins(0,0,0,0)
+        self.vertical_layout.addWidget(self.canvas)
         
         
         self.axes = self.canvas.figure.add_subplot(111)
         
         #self.axes.patch.set_visible(False)
-        self.setLayout(vertical_layout)
-        self.layout().addWidget(self.canvas)
+#        self.setLayout(vertical_layout)
+#        self.layout().addWidget(self.canvas)
 
         rs = np.random.RandomState(365)
         values = rs.randn(365, 4).cumsum(axis=0)
@@ -39,12 +39,22 @@ class MultilineGraphWidget(QWidget):
         data = pd.DataFrame(values, dates, columns=["A", "B", "C", "D"])
         data = data.rolling(7).mean()
 
-        sns.set_context("paper")
-        sns.set_style("darkgrid") #May take effect after wide form -> long form data conversion
-        plot = sns.lineplot(data=data, ax=self.axes)
-        plot.tick_params(colors='red', which='both')
-        plot.xaxis.label.set_color('purple')
-        plot.yaxis.label.set_color('silver')
+#        sns.set_context("paper")
+#        sns.set_style("darkgrid") #May take effect after wide form -> long form data conversion
+#        plot = sns.lineplot(data=data, ax=self.axes)
+#        plot.tick_params(colors='red', which='both')
+#        plot.xaxis.label.set_color('purple')
+#        plot.yaxis.label.set_color('silver')
         
+        
+#        self.plot = plot
+
+    def update_graph(self, dataframe):
+        self.setLayout(self.vertical_layout)
+        self.layout().addWidget(self.canvas)
+
+        sns.set_context("paper")
+        sns.set_style("darkgrid")
+        plot = sns.lineplot(data=dataframe, ax=self.axes, x="Date", y = "Lines Modified", hue="Repo Name", ci=None)
         
         self.plot = plot

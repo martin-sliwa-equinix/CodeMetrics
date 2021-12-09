@@ -1,6 +1,7 @@
 from datetime import date
 from PyQt5.QtWidgets import QMessageBox, QTableWidgetItem
 import pandas as pd
+from dateutil import parser
 
 class Applogic:
     def __init__(self, git):
@@ -73,7 +74,7 @@ class Applogic:
                         committer = "None"
                     
                     repo_stats = git.get_repo_commit_stats(repo_obj, commit)
-                    values = [commit.sha, commit.last_modified, repo_stats.additions, repo_stats.deletions, committer, branch.name]
+                    values = [commit.sha, parser.parse(commit.last_modified).date().isoformat(), repo_stats.additions, repo_stats.deletions, committer, branch.name]
                     dbhandler.insert_commit(values)
 
             
@@ -100,15 +101,11 @@ class Graphlogic:
         self.graphdata_codedensity = self.get_graphdata_codedensity(repos)
         print(self.graphdata_codedensity)
 
-    #TODO: Probably rewrite this entire thing using DB data now
     def get_graphdata_codedensity(self, dbhandler):
         #Return a constructed dataframe of the following format:
         # Reponame | Date of commit | commits added + subtracted
         data = dbhandler.get_graphdata_codedensity()
-        type(data)
-        print("Data says:")
-        print(data)
 
-        x = pd.DataFrame(data)
-        print(x)
-        #return pd.DataFrame(data)
+        dataframe = pd.DataFrame(data, columns=["Repo Name", "Date", "Lines Modified"])
+        
+        return dataframe
