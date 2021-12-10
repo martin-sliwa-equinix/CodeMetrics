@@ -29,20 +29,25 @@ class Applogic:
 
     def add_repo(self, repoUrl, settings, form):
         if self.git.checkValidRepo(repoUrl):
-            settings.trackedrepos.append(repoUrl)
-            settings.update_settings()
-            self.refresh_repo_display(settings.trackedrepos, form)
+            newtrackedrepos = settings.trackedrepos
+            newtrackedrepos.append(repoUrl)
+
+            if len(set(newtrackedrepos)) == len(newtrackedrepos):
+                #If true, there are no detected duplicates
+                settings.trackedrepos = newtrackedrepos
+                settings.update_settings()
+                self.refresh_repo_display(settings.trackedrepos, form)
+            else:
+                #Duplicate has been detected, do not commit. Throw error
+                self.popupAlert("ERROR", "This repo is already tracked. Please ensure this repo is not already tracked.")
+
         else:
-            self.popupAlert("ERROR: Repo failed validation", "Ensure repo is \"[username]/[reponame]\" as copied from the end of a repo's URL.")
-            self.refresh_repo_display(settings.trackedrepos, form)
+            self.popupAlert("ERROR", "Repo failed validation. Ensure repo is \"[username]/[reponame]\" as copied from the end of a repo's URL.")
 
     def remove_repo(self,repoIndex, settings, form):
         del settings.trackedrepos[repoIndex]
         settings.update_settings()
         self.refresh_repo_display(settings.trackedrepos, form)
-
-    def update_repo_commit_graph(self):
-        print("TODO")
 
     def popupAlert(self, title, message):
         msg = QMessageBox()

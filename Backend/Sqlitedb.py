@@ -15,7 +15,7 @@ class DBHandler:
 
         self.sql_create_commit_table= """ CREATE TABLE IF NOT EXISTS commits (
                 id integer PRIMARY KEY,
-                commit_sha text NOT NULL,
+                commit_sha text NOT NULL UNIQUE,
                 last_modified text,
                 stats_added int,
                 stats_deleted int,
