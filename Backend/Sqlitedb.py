@@ -10,7 +10,8 @@ class DBHandler:
         self.sql_create_branch_table= """ CREATE TABLE IF NOT EXISTS branches (
                 id integer PRIMARY KEY,
                 repo_name text NOT NULL,
-                branch_name text NOT NULL
+                branch_name text NOT NULL,
+                repo_fullname text NOT NULL
                 ); """
 
         self.sql_create_commit_table= """ CREATE TABLE IF NOT EXISTS commits (
@@ -48,10 +49,46 @@ class DBHandler:
         except Error as e:
             print(e)
 
-    def insert_branch(self, branch):
-        sql = """ INSERT INTO branches(repo_name, branch_name)
-        VALUES(?,?)
+    def remove_branch_by_branch_name(self, branch):
+        sql = """ DELETE FROM branches
+        WHERE branch_name=?
         """
+
+        self.commit(sql, branch)
+        
+    def remove_branch_by_repo_fullname(self, repo_fullname):
+        sql = """ DELETE FROM branches
+        WHERE repo_fullname=?
+        """
+        conn = self.conn
+
+        cur = conn.cursor()
+        cur.execute(sql, (repo_fullname,))
+        conn.commit()
+
+
+    def remove_commit_by_branch_name(self, repo_fullname):
+        sql = """ DELETE FROM commits
+        WHERE repo_fullname=?
+        """
+
+        self.commit(sql, repo_fullname)
+
+    def remove_commit_by_commit_sha(self, sha):
+        sql = """ DELETE FROM commits
+        WHERE commit_sha=?
+        """
+        conn = self.conn
+
+        cur = conn.cursor()
+        cur.execute(sql, (sha[0],))
+        conn.commit()
+
+    def insert_branch(self, branch):
+        sql = """ INSERT INTO branches(repo_name, branch_name, repo_fullname)
+        VALUES(?,?,?)
+        """
+
         conn = self.conn
 
         cur = conn.cursor()
@@ -67,6 +104,51 @@ class DBHandler:
         cur = conn.cursor()
         cur.execute(sql, commit)
         conn.commit()
+
+    def get_commit_sha_by_repo_fullname(self, repo_fullname):
+        sql = """
+        SELECT commits.commit_sha
+        FROM commits, branches
+        WHERE commits.branch_name = branches.branch_name
+        AND branches.repo_fullname = ?
+        """
+
+        conn = self.conn
+
+        cur = conn.cursor()
+        cur.execute(sql, (repo_fullname,))
+
+        rows = cur.fetchall()
+        return rows
+
+    def get_all_repo_branch_names(self):
+        sql = """
+        SELECT repo_name, branch_name
+        FROM branches
+        """
+
+        conn = self.conn
+
+        cur = conn.cursor()
+        cur.execute(sql)
+        
+        rows = cur.fetchall()
+        return rows
+
+    def get_all_commit_shas(self):
+        sql = """
+        SELECT commit_sha
+        FROM commits
+        """
+
+        conn = self.conn
+
+        cur = conn.cursor()
+        cur.execute(sql)
+        
+        rows = cur.fetchall()
+        return rows
+
 
     def get_graphdata_codedensity(self):
         #Return rows with following format:
@@ -84,3 +166,5 @@ class DBHandler:
 
         rows = cur.fetchall()
         return rows
+
+    

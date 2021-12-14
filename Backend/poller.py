@@ -73,6 +73,10 @@ class GitAPIPoller:
         #returns commits[commit n]
         return commits
 
+    def get_repo_commit_last_modified(self, repo, commit):
+        #Force the loading of the last modified date
+        return repo.get_commit(commit.sha).last_modified
+
     def get_repo_commit_stats(self, repo, commit):
         #This function will return the additions and deletions of a given commit in a repo
         stats = repo.get_commit(commit.sha).stats

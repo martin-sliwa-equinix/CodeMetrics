@@ -44,8 +44,19 @@ class Applogic:
         else:
             self.popupAlert("ERROR", "Repo failed validation. Ensure repo is \"[username]/[reponame]\" as copied from the end of a repo's URL.")
 
-    def remove_repo(self,repoIndex, settings, form):
+    def remove_repo(self, dbhandler, git, repoIndex, settings, form):
+        repo_fullname = str(settings.trackedrepos[repoIndex])
+
+        #Delete item from GUI object
         del settings.trackedrepos[repoIndex]
+
+        #Remove commits and repo from database
+        commit_shas = dbhandler.get_commit_sha_by_repo_fullname(repo_fullname)
+        [dbhandler.remove_commit_by_commit_sha(sha) for sha in commit_shas]
+        dbhandler.remove_branch_by_repo_fullname(repo_fullname)
+    
+
+        #Update saved settings and GUI
         settings.update_settings()
         self.refresh_repo_display(settings.trackedrepos, form)
 
@@ -60,29 +71,37 @@ class Applogic:
         
         repo_list = self.git.get_all_repos(repos)
         
+        
         for repo_obj in repo_list:
-            #TODO: Check if this repo already exists in db in case of dupe repos
-            #TODO: Also find method to see if repo data is newer than what we have
             branches = git.get_repo_branches(repo_obj)
+            
 
             for branch in branches:
+                #Pull comparison of all existing shas
+                all_commit_shas = [sha[0] for sha in dbhandler.get_all_commit_shas()]
+
                 #Populate branches table
-                dbhandler.insert_branch((repo_obj.name, branch.name))
+                dbhandler.insert_branch((repo_obj.name, branch.name, repo_obj.full_name))
 
                 commits = git.get_commits_by_branch(repo_obj, branch)
+                print("Original length: " + str(commits.totalCount))
+                commits = [commit for commit in commits if commit.sha not in all_commit_shas]
+                print("Pruned length: " + str(len(commits)))
+
 
                 for commit in commits:
-                    #TODO: Check if commitsha already exists in db before doing this
                     if hasattr(commit.committer, "login"): 
                         committer = commit.committer.login
                     else: 
                         committer = "None"
                     
+                    last_modified = git.get_repo_commit_last_modified(repo_obj, commit)
+
                     repo_stats = git.get_repo_commit_stats(repo_obj, commit)
-                    values = [commit.sha, parser.parse(commit.last_modified).date().isoformat(), repo_stats.additions, repo_stats.deletions, committer, branch.name]
+                    values = [commit.sha, parser.parse(last_modified).date().isoformat(), repo_stats.additions, repo_stats.deletions, committer, branch.name]
                     dbhandler.insert_commit(values)
 
-            
+#TODO: I just realized that commits have a One:Many relationship with branches. This changes everything.        
 
 
 #Contains all dataframe and graph related calculations

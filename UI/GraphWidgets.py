@@ -13,6 +13,8 @@ import pandas as pd
 # Graph Widget
 class MultilineGraphWidget(QWidget):
     def __init__(self, parent=None):
+        self.rendered = 0
+
         QWidget.__init__(self, parent)
 
         fig = Figure(constrained_layout=True)
@@ -50,11 +52,28 @@ class MultilineGraphWidget(QWidget):
 #        self.plot = plot
 
     def update_graph(self, dataframe):
+        if self.rendered == 1:
+            self.layout().removeWidget(self.canvas)
+
+        fig = Figure(constrained_layout=True)
+        #fig.set_facecolor("blue")
+        fig.patch.set_visible(False)
+        self.canvas = FigureCanvas(fig)
+        #self.setStyleSheet("background-color:grey;")
+        self.setStyleSheet("background:transparent;")
+
+        self.vertical_layout = QVBoxLayout()
+        self.vertical_layout.setContentsMargins(0,0,0,0)
+        self.vertical_layout.addWidget(self.canvas)
+
         self.setLayout(self.vertical_layout)
         self.layout().addWidget(self.canvas)
+
+        self.axes = self.canvas.figure.add_subplot(111)
 
         sns.set_context("paper")
         sns.set_style("darkgrid")
         plot = sns.lineplot(data=dataframe, ax=self.axes, x="Date", y = "Lines Modified", hue="Repo Name", ci=None)
         
+        self.rendered = 1
         self.plot = plot

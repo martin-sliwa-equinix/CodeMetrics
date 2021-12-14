@@ -33,7 +33,7 @@ mainform = Ui_MainWindow()
 mainform.setupUi(mainwindow)
 applogic.refresh_repo_display(settings.trackedrepos, mainform)
 mainform.ButtonAddRepo.clicked.connect(lambda: applogic.add_repo(mainform.TextboxAddRepo.text(), settings, mainform))
-mainform.ButtonRemoveRepo.clicked.connect(lambda: applogic.remove_repo(mainform.tableRepos.currentRow(), settings, mainform))
+mainform.ButtonRemoveRepo.clicked.connect(lambda: applogic.remove_repo(dbhandler, git, mainform.tableRepos.currentRow(), settings, mainform))
 mainform.buttonSyncRepos.clicked.connect(lambda: applogic.populateDB(dbhandler, git, settings.trackedrepos))
 mainform.ButtonUpdateGraphs.clicked.connect(lambda: mainform.MultilineGraphWidget.update_graph(graphlogic.get_graphdata_codedensity(dbhandler)))
 
